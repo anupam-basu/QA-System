@@ -53,7 +53,7 @@ def process_answer(ques,Entity,Verb_list,answerlist):
 		for key,answer in answerlist.items():
 			if len(answer)>0:
 				for source in answer:
-					count =+ 1
+					count += 1
 					print("\nA%d: It %s" %(count,past_tense(key)))
 					print "\nSource\n",source
 
@@ -62,7 +62,7 @@ def process_answer(ques,Entity,Verb_list,answerlist):
 	#iterates through a a list of tuples to get the values and the sentences
 	if re.match(r"^How\smuch.*\?$",ques) or re.match(r"^What.*\?$",ques) :
 		for answer,sourcline in answerlist["value"]:
-			count =+ 1
+			count += 1
 			print("\nA%d: %s" %(count,answer))
 			print "\nSource\n",sourcline
 	#If no answer is found then print below
@@ -92,7 +92,7 @@ def find_answer(PN,VBlist,passage,question_type):
 					Interest_words.append(word)
 				elif wordflag == 0 and Interest_word.lower() in word.lower():
 					Interest_words.append(word)
-					wordflag=1
+					wordflag = 1
 				elif wordflag == 1 and "NNP" not in pos:
 					break;
 			sentence_flag = 1
