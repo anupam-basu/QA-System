@@ -1,27 +1,27 @@
-import re 
+import re
 import nltk
 import sys, getopt
 from nltk.tag import pos_tag
 
 #global variable
-Q_list=["does","did","have","has","had","Is","Are"]
+Q_list = ["does","did","have","has","had","Is","Are"]
 
 
 #will show the past tense of the word, this is used in process_answer on the verb when printing the output
 def past_tense(word):
-	if word=='drop':
+	if word == 'drop':
 		return "dropped"
-	elif word=='rise':
+	elif word == 'rise':
 		return 'rose'
-	elif word=='up':
+	elif word == 'up':
 		return 'went up'
-	elif word=='down':
+	elif word == 'down':
 		return 'went down'
-	elif word=='climb':
+	elif word == 'climb':
 		return 'climbed'
-	elif word=='fall':
+	elif word == 'fall':
 		return "fell"
-	elif word=='open':
+	elif word == 'open':
 		return "opened"
 
 #retrieves a list of synonyms for the words in the function otherwise returns false
@@ -39,7 +39,7 @@ def syn(word):
 	if word in open_word:
 		return open_word
 	else:
-		return False	
+		return False
 
 #returns the answer list
 def process_answer(ques,Entity,Verb_list,answerlist):
@@ -65,7 +65,7 @@ def process_answer(ques,Entity,Verb_list,answerlist):
 			count=count+1
 			print("\nA%d: %s" %(count,answer))
 			print "\nSource\n",sourcline
-	#If no answer is found then print below 
+	#If no answer is found then print below
 	if count==0:
 		print "\nNo information available\n"
 
@@ -80,13 +80,13 @@ def find_answer(PN,VBlist,passage,question_type):
 	wordflag=0
 	sentence_flag=0
 
-	
+
 	#extract paraphrases of entity
 	for line in passage.split("\n"):
 		if re.search("\s"+Interest_word+"\s",line,re.IGNORECASE) and sentence_flag==0:
-			
+
 			captured_sentence=nltk.word_tokenize(line)
-			
+
 			for word, pos in pos_tag(captured_sentence):
 				if wordflag==1 and "NNP" in pos:
 					Interest_words.append(word)
@@ -108,12 +108,12 @@ def find_answer(PN,VBlist,passage,question_type):
 
 	for Entity_word in Interest_words:
 
-		linecount=0
+		linecount = 0
 		for line in passage.split("\n"):
 
 			linecount=linecount+1
 			if line not in captured_sentence_list:
-					
+
 				if re.search("\s"+Entity_word.lower()+"\s",line,re.IGNORECASE):
 					#if the the question is a confirmation type like "did it rise or fall"
 					if question_type ==1:
@@ -129,14 +129,14 @@ def find_answer(PN,VBlist,passage,question_type):
 									#the verb dictionary of answerlist is a list where The answers are appeneded hence 'drop' and 'rise' will have seperate lists
 
 					#if the question asks for a quantity:
-					elif question_type ==2:
+					elif question_type == 2:
 						for syn_word in syn(VBlist[0]):
 							found=re.search(r'\s'+Entity_word.lower()+".*"+syn_word+'\s[\D]*([\d]+(\s[\d]+\/[\d]+|\.?\d+)\%?)',line,re.IGNORECASE)
 							if found:
 								answerlist[str(VBlist[0])].append(line)
 								line_and_number=line+"\n"+"(line "+str(linecount)+")"
 								answerlist["value"].append((found.group(1),line_and_number))
-								
+
 								captured_sentence_list.append(line)
 								#captured sentences list is appened so that the those lines of the passage are not visited again
 
@@ -184,13 +184,13 @@ def q_type(ques,passage):
 		print "type not explored or wrong question structure"
 
 def main(argv):
-	Entity=list()
-	Verb_list=list()
-	#opens the passage 
-	passagefile=open(argv[0])
-	passage=passagefile.read()
-	passage=passage.strip()
-	#opens the question document if it exists 
+	Entity = list()
+	Verb_list = list()
+	#opens the passage
+	passagefile = open(argv[0])
+	passage = passagefile.read()
+	passage = passage.strip()
+	#opens the question document if it exists
 	if len(argv)>1:
 		questionfile=open(argv[1])
 		questionList=questionfile.read()
@@ -207,7 +207,6 @@ def main(argv):
 			else:
 				print "Try again"
 
-	
-if __name__=='__main__':
-	main(sys.argv[1:])
 
+if __name__ == '__main__':
+	main(sys.argv[1:])
