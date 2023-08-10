@@ -1,25 +1,25 @@
-DOCUMENTATION FOR THE QA System:
-NAME: ANUPAM BASU
-EMAIL: anupamb@udel.edu
+## DOCUMENTATION FOR THE QA System:
+  NAME: ANUPAM BASU
+  EMAIL: anupamb@udel.edu
 
-FILENAME:qa1.py
-    PACKAGES USED: nltk
-    libraries used in nltk: nltk.tag
+  FILENAME:qa1.py
+      PACKAGES USED: nltk
+      libraries used in nltk: nltk.tag
 
 
-    Terminaology used:
-        type 1: Confirmation based question
-        type 2: Quantity based question
+# Terminaology used:
+    type 1: Confirmation based question
+    type 2: Quantity based question
 
-    METHODS USED:
-        q_type 
+# METHODS USED:
+        q_type
             Arguments: ques, passage
-            Purpose: Takes in the question from the function call and categorizes what type of question it falls under. Currently it follows sentences begining with What, How , Did. 
+            Purpose: Takes in the question from the function call and categorizes what type of question it falls under. Currently it follows sentences begining with What, How , Did.
 
             ****'What' and 'How' falls under the quantitative answers(type 1)****
 
             ****'Did' falls under the confirmation answers (type 2)****
-            
+
             It also collects the Nouns(Proper Noun list or entity list) and verbs (Verb list) from the question using the pos_tag which we utilise in sending to the "find_answer" function as an argument to "process_answer" function
             return: void
 
@@ -27,10 +27,10 @@ FILENAME:qa1.py
             Arguments: PN,VBlist,passage,question_type
             Purpose: looks for answers in the passage and returns a list of ocurances of a word. It takes in the ProperNoun(PN) VBlist(verb list), the passage, and the question_type (either 1 or 2 ;see q_type function)
             Initially it will look through the passage with the first element of ProperNoun to look for a match along with the list of Proper Nouns which we will utilise for paraphrasing(used as Interest_word).
-            e.g.: 
+            e.g.:
                   PN[0]="Dow"
                   Interest_Words=["Dow","Jones","Industrial"]
-            A dictionary in the name of "answerlist" is created to store lists under verbs in the case of type 1, and list of tuples (<value>, <sentence_where_value was found>) 
+            A dictionary in the name of "answerlist" is created to store lists under verbs in the case of type 1, and list of tuples (<value>, <sentence_where_value was found>)
 
 
             Under both types I look for sentences matching an entity under Interest_word(which is used for paraphrasing) and searching through list of synonyms under the VBlist(captured in q_type) in the arguments. Different regular expressions are used in each case.
@@ -46,7 +46,7 @@ FILENAME:qa1.py
         process_answer
             Arguments: ques,Entity,Verb_list,answerlist
             Purpose: is to process the answer looking through the answerlist for two types of questions. One will retrieve the answerlist with the verb as the key (type 1), and output the collection.
-            The type 2 
+            The type 2
 
         syn
             Arguments: word
@@ -57,14 +57,14 @@ FILENAME:qa1.py
             Arguments: word
             Purpose: Used in tht process_answer for type 1 questions. Returns a past tense of the word for the use of output.
 
-        Main 
-            Purpose: Accepts two arguments from the command line. If one argument then the user is prompted to ask a question till the user presses "q". Invalid questions will result in "Try again" .Calls the q_type function 
+        Main
+            Purpose: Accepts two arguments from the command line. If one argument then the user is prompted to ask a question till the user presses "q". Invalid questions will result in "Try again" .Calls the q_type function
 
 
 LIMITATIONS:
-  - Does not detect Pronouns 
+  - Does not detect Pronouns
   - Answer collection might mistake a verb meant for a different Proper noun:
-      e.g. 
+      e.g.
           Q: Did Dow fall?
           A: It fell
           Source:
@@ -90,6 +90,7 @@ Downloader> c
 
 Data Server:
   - URL: <http://nltk.googlecode.com/svn/trunk/nltk_data/index.xml>
+```
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   File "/usr/lib/python2.7/dist-packages/nltk/downloader.py", line 644, in download
@@ -113,3 +114,4 @@ Traceback (most recent call last):
   File "/usr/lib/python2.7/dist-packages/nltk/etree/ElementTree.py", line 1245, in feed
     self._parser.Parse(data, 0)
 xml.parsers.expat.ExpatError: mismatched tag: line 5, column 4
+```
